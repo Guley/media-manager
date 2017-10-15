@@ -71,9 +71,9 @@
                                     <div class="heading-elements">
 
                                         <div class="heading-btn-group">
-
+					<?php if(strpos($current_url, 'media')){ ?>
                                             <button type="button" onclick="loadUploaderWithGallery('.txt_container', 'media_test', 'single')" class="btn btn-primary btn-icon btn-rounded"><i class="icon-upload"></i></button> <!--  if you need to upload muliple images chanhe single to multiple -->
-
+					<?php } ?>
                                         </div>
 
                                     </div>
