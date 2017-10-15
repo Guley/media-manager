@@ -47,7 +47,8 @@
                                 <?php $current_url = ' '.uri_string(); ?>
                                 <ul class="navigation navigation-main navigation-accordion">
                                     
-                                    <li <?php echo strpos($current_url, 'media')?'class="active"':''; ?> ><a href="<?php echo base_url('media'); ?>"><i class="icon-users"></i> <span>Media</span></a></li>
+                                    <li><a href="<?php echo base_url(); ?>"><i class="icon-user"></i> <span>Dashbaord</span></a></li>
+                                    <li <?php echo strpos($current_url, 'media')?'class="active"':''; ?> ><a href="<?php echo base_url('media'); ?>"><i class="icon-file-media"></i> <span>Media</span></a></li>
                                 </ul>
                             </div>
                         </div>
