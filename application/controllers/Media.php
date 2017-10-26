@@ -46,6 +46,7 @@ class Media extends MY_Controller {
         ];
         $page = $this->input->get('page');
         $get_module = $this->input->get('module');
+        $search = $this->input->get('search');
         $offset = $page ? ($page-1)*PAGE_RECORD_LIMIT : 0;
         
         $set_module = '';
@@ -57,7 +58,10 @@ class Media extends MY_Controller {
                 $cond['module'] = '';
             }
         }
-        
+        if(!empty($search)){
+                $cond['search_query'][] = '(file_name  LIKE "%'.$search.'%")';
+                
+        }
         /* $total = $this->Media_m->getmedia($cond, $offset,false,true);
         $this->ajax_init_pagination(base_url('media/ajaxPaginationData'), $total);
         $data['mediaList'] = $this->Media_m->getmedia($cond,$offset);
