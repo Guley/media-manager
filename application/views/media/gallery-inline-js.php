@@ -138,7 +138,7 @@
             } else {
                 $(input_container).find('input[name="'+hidden_field+'"][value="'+id+'"]').remove();
             }
-            $(".img_"+id).remove();
+            $("."+selected_images).find(".img_"+id).remove();
         }
     }
     
