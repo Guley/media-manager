@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close closemediapop" data-dismiss="modal">&times;</button>
                 <h5 class="modal-title">Media Gallery</h5>
             </div>
             <div class="modal-body">
@@ -16,29 +16,26 @@
                     <div class="dataTables_filter">
                         <label>
                             <span>Filter:</span>
-                            <input type="search" class="search_txt" placeholder="Type to filter..." >
+                            <input class="form-control search_txt" type="search" placeholder="Type to filter..." >
                         </label>
                         <button class="btn btn-primary" type="button" onclick="sf()" >Search</button>
                     </div>
                     <div class="dataTables_length col-md-6" >
                         <div class="col-md-4">
                             <label><span>Category:</span> 
-                            <select name="set_modules" onchange="refreshImageList()" >
+                            <select class="form-control" name="set_modules" onchange="refreshImageList()" >
                                 <option value="" >- All -</option>
                             </select></label>
                         </div>
                         <div class="col-md-4">
                             <label><span>Page:</span> 
-                            <select name="gallery_pages" class="select2" onchange="refreshImageList()" >
+                            <select class="form-control" name="gallery_pages" class="select2" onchange="refreshImageList()" >
                                 <option value="1">1</option>
                             </select></label>
                         </div>
                     </div>
                 </div>
                 <div class="row image_list"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -49,6 +46,7 @@
     var selection_type = '';
     var field_container = '';
     var hidden_field_name = '';
+    var selected_images = '';
 
     /*
      * 
@@ -57,10 +55,11 @@
      * @type {string} single, multi
      * 
      */
-    function loadUploaderWithGallery(field_container, hidden_field_name, type) {
+    function loadUploaderWithGallery(field_container, hidden_field_name, type,selected_images='selected_images') {
         window.selection_type = type;
         window.field_container = field_container;
         window.hidden_field_name = hidden_field_name;
+        window.selected_images = selected_images;
         $('#gallery_container').modal('show');
         refreshImageList();
     }
@@ -83,7 +82,7 @@
             success: function (data) {
                 if (data.total > 0) {
                     $(data.list).each(function (key, imglist) {
-                        var htmlContent = imgGalleryContent(imglist.image_url, imglist.image_id, imglist.image_name);
+                        var htmlContent = imgGalleryContent(imglist.image_url, imglist.image_id, imglist.image_name,selected_images);
                         if (key == 0) {
                             $(".image_list").html(htmlContent);
                         } else {
@@ -107,21 +106,21 @@
         })
     }
     
-    function imgGalleryContent(image_url, image_id, image_name){
-        return '<div class="col-lg-2 col-sm-3"><div class="thumbnail"><div class="thumb"><img src="' + image_url + '" alt=""><div class="caption-overflow"><span><a href="javascript:void(0);" onclick="addImage(' + image_id + ', \'' + image_url + '\', \'' + image_name + '\')" class="btn border-white text-white btn-flat btn-icon btn-rounded"><i class="icon-plus3"></i></a></span></div></div><div class="caption"><h6 class="no-margin image_title" >' + image_name + '</h6></div></div></div>';
+    function imgGalleryContent(image_url, image_id, image_name,selected_images='selected_images'){
+        return '<div class="col-lg-2 col-sm-3"><div class="thumbnail"><div class="thumb"><img src="' + image_url + '" alt=""><div class="caption-overflow"><span><a href="javascript:void(0);" onclick="addImage(' + image_id + ', \'' + image_url + '\', \'' + image_name + '\', \'' + selected_images + '\')" class="btn border-white text-white btn-flat btn-icon btn-rounded"><i class="icon-plus3"></i></a></span></div></div><div class="caption"><h6 class="no-margin image_title" >' + image_name + '</h6></div></div></div>';
     }
     
     function addImgContent(imgId, image_url, image_name){
         return '<div class="col-lg-2 col-sm-3 img_'+imgId+'" ><div class="thumbnail"><div class="thumb"><img src="' + image_url + '" alt=""><div class="caption-overflow"><span><a href="javascript:void(0);" class="btn border-white text-white btn-flat btn-icon btn-rounded" onclick="removeImg('+imgId+', \''+selection_type+'\', \''+field_container+'\', \''+hidden_field_name+'\')" ><i class="icon-trash"></i></a></span></div></div><div class="caption"><h6 class="no-margin image_title" >' + image_name + '</h6></div></div></div>';
     }
     
-    function addImage(imgId, imgUrl, image_name){
+    function addImage(imgId, imgUrl, image_name,selected_images='selected_images'){
         if(selection_type == 'single'){
-            $(".selected_images").html(addImgContent(imgId, imgUrl, image_name));
+            $("."+selected_images).html(addImgContent(imgId, imgUrl, image_name));
             $(field_container).find('input[name="'+hidden_field_name+'"]').val(imgId);
             $('#gallery_container').modal('hide');
         } else {
-            $(".selected_images").append(addImgContent(imgId, imgUrl, image_name));
+            $("."+selected_images).append(addImgContent(imgId, imgUrl, image_name));
             $(field_container).find('input[name="'+hidden_field_name+'"]').filter(function(){return this.value==''}).remove();
             $(field_container).append('<input type="hidden" name="'+hidden_field_name+'" value="'+imgId+'" >');
         }
@@ -190,4 +189,7 @@
         $('#gallery_container').on('hide.bs.modal', function (e) {
             $('.file-input-ajax').fileinput('refresh');
         })
+    });
+    $(document).on('click','.closemediapop',function(){
+        //location.reload();
     });
