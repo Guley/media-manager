@@ -12,13 +12,13 @@ class MY_Controller extends CI_Controller {
         $this->load->view($layout_file, $data);
     }
     
-    protected function init_pagination($base_url, $total_rows){
+    protected function init_pagination($base_url, $total_rows,$page_record_limit = PAGE_RECORD_LIMIT){
             $this->load->library('pagination');
             $config = array();
             $config['base_url'] = $base_url;
             $config['page_query_string'] = true;
             $config['total_rows'] = $total_rows;
-            $config['per_page'] = PAGE_RECORD_LIMIT;
+            $config['per_page'] = $page_record_limit;
             $config['full_tag_open'] = '<ul class="pagination">';
             $config['full_tag_close'] = '</ul>';
             $config['first_link'] = false;
