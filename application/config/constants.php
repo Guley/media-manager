@@ -88,6 +88,7 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 define('SITE_NAME', 'Media Gallery');
 define('SITE_URL', 'http://www.media.dev');
 define('PAGE_RECORD_LIMIT', 10);
+define('MEDIA_RECORD_LIMIT', 12);
 define('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT']);
 define('DOCUMENT_ROOT_CDN', $_SERVER['DOCUMENT_ROOT'].'/cdn/');
 define('ADMIN_CONTACT_US_EMAIL', 'gulshan@rkmarketing.net');
