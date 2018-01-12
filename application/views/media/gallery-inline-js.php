@@ -22,15 +22,15 @@
                     </div>
                     <div class="dataTables_length col-md-6" >
                         <div class="col-md-4">
-                            <label><span>Category:</span> 
+                            <label>
                             <select class="form-control" name="set_modules" onchange="refreshImageList()" >
-                                <option value="" >- All -</option>
+                                <option value="" >- All Categories -</option>
                             </select></label>
                         </div>
                         <div class="col-md-4">
-                            <label><span>Page:</span> 
+                            <label><span></span> 
                             <select class="form-control" name="gallery_pages" class="select2" onchange="refreshImageList()" >
-                                <option value="1">1</option>
+                                <option value="1">Page 1</option>
                             </select></label>
                         </div>
                     </div>
@@ -47,6 +47,7 @@
     var field_container = '';
     var hidden_field_name = '';
     var selected_images = '';
+    var img_ = 'img_';
 
     /*
      * 
@@ -55,11 +56,12 @@
      * @type {string} single, multi
      * 
      */
-    function loadUploaderWithGallery(field_container, hidden_field_name, type,selected_images='selected_images') {
+    function loadUploaderWithGallery(field_container, hidden_field_name, type,selected_images='selected_images',img_='img_') {
         window.selection_type = type;
         window.field_container = field_container;
         window.hidden_field_name = hidden_field_name;
         window.selected_images = selected_images;
+        window.img_ = img_;
         $('#gallery_container').modal('show');
         refreshImageList();
     }
@@ -82,7 +84,7 @@
             success: function (data) {
                 if (data.total > 0) {
                     $(data.list).each(function (key, imglist) {
-                        var htmlContent = imgGalleryContent(imglist.image_url, imglist.image_id, imglist.image_name,selected_images);
+                        var htmlContent = imgGalleryContent(imglist.image_url, imglist.image_id, imglist.image_name,selected_images,img_);
                         if (key == 0) {
                             $(".image_list").html(htmlContent);
                         } else {
@@ -92,7 +94,7 @@
                         var pageHtml = '';
                         for(p=1;p<=data.pages;p++){
                             var is_selected = (page==p)?'selected=selected':'';
-                            pageHtml = pageHtml+'<option '+is_selected+' value="'+p+'" >'+p+'</option>';
+                            pageHtml = pageHtml+'<option '+is_selected+' value="'+p+'" >Page '+p+'</option>';
                         }
                         $('select[name="gallery_pages"]').html(pageHtml);
                         
@@ -106,21 +108,21 @@
         })
     }
     
-    function imgGalleryContent(image_url, image_id, image_name,selected_images='selected_images'){
-        return '<div class="col-lg-2 col-sm-3"><div class="thumbnail"><div class="thumb"><img src="' + image_url + '" alt=""><div class="caption-overflow"><span><a href="javascript:void(0);" onclick="addImage(' + image_id + ', \'' + image_url + '\', \'' + image_name + '\', \'' + selected_images + '\')" class="btn border-white text-white btn-flat btn-icon btn-rounded"><i class="icon-plus3"></i></a></span></div></div><div class="caption"><h6 class="no-margin image_title" >' + image_name + '</h6></div></div></div>';
+    function imgGalleryContent(image_url, image_id, image_name,selected_images='selected_images',img_='img_'){
+        return '<div class="col-lg-2 col-sm-3"><div class="thumbnail"><div class="thumb"><img src="' + image_url + '" alt=""><div class="caption-overflow"><span><a href="javascript:void(0);" onclick="addImage(' + image_id + ', \'' + image_url + '\', \'' + image_name + '\', \'' + selected_images + '\', \'' + img_ + '\')" class="btn border-white text-white btn-flat btn-icon btn-rounded"><i class="icon-plus3"></i></a><h6 class="no-margin image_title" >' + image_name.substr(0, 10)  + '</h6></span></div></div></div></div>';
     }
     
-    function addImgContent(imgId, image_url, image_name){
-        return '<div class="col-lg-2 col-sm-3 img_'+imgId+'" ><div class="thumbnail"><div class="thumb"><img src="' + image_url + '" alt=""><div class="caption-overflow"><span><a href="javascript:void(0);" class="btn border-white text-white btn-flat btn-icon btn-rounded" onclick="removeImg('+imgId+', \''+selection_type+'\', \''+field_container+'\', \''+hidden_field_name+'\')" ><i class="icon-trash"></i></a></span></div></div><div class="caption"><h6 class="no-margin image_title" >' + image_name + '</h6></div></div></div>';
+    function addImgContent(imgId, image_url, image_name,img_='img_'){
+        return '<div class="col-lg-2 col-sm-3 '+img_+imgId+'" ><div class="thumbnail"><div class="thumb"><img src="' + image_url + '" alt=""><div class="caption-overflow"><span><a href="javascript:void(0);" class="btn border-white text-white btn-flat btn-icon btn-rounded" onclick="removeImg('+imgId+', \''+selection_type+'\', \''+field_container+'\', \''+hidden_field_name+'\', \''+img_+'\')" ><i class="icon-trash"></i></a><h6 class="no-margin image_title" >' + image_name.substr(0, 10)  + '</h6></span></div></div></div></div>';
     }
     
-    function addImage(imgId, imgUrl, image_name,selected_images='selected_images'){
+    function addImage(imgId, imgUrl, image_name,selected_images='selected_images',img_='img_'){
         if(selection_type == 'single'){
-            $("."+selected_images).html(addImgContent(imgId, imgUrl, image_name));
+            $("."+selected_images).html(addImgContent(imgId, imgUrl, image_name,img_));
             $(field_container).find('input[name="'+hidden_field_name+'"]').val(imgId);
             $('#gallery_container').modal('hide');
         } else {
-            $("."+selected_images).append(addImgContent(imgId, imgUrl, image_name));
+            $("."+selected_images).append(addImgContent(imgId, imgUrl, image_name,img_));
             $(field_container).find('input[name="'+hidden_field_name+'"]').filter(function(){return this.value==''}).remove();
             $(field_container).append('<input type="hidden" name="'+hidden_field_name+'" value="'+imgId+'" >');
         }
@@ -131,14 +133,16 @@
         refreshImageList();
     }
     
-    function removeImg(id, qty_type, input_container, hidden_field){
+    function removeImg(id, qty_type, input_container, hidden_field,img_='img_'){
+        
+
         if(confirm("Are you sure to remove this?")){
             if(qty_type == 'single'){
                 $(input_container).find('input[name="'+hidden_field+'"]').val('');
             } else {
                 $(input_container).find('input[name="'+hidden_field+'"][value="'+id+'"]').remove();
             }
-            $("."+selected_images).find(".img_"+id).remove();
+            $("."+img_+id).remove();
         }
     }
     
