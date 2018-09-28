@@ -1,5 +1,6 @@
-<div class="row selected_images">
-
+<div class="content">
+    <?php echo form_input($form['media_id']);  ?>
+    <div class="row selected_images"> </div>
 </div>
 
 
