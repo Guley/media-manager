@@ -34,7 +34,16 @@ class Media extends MY_Controller {
         $cond = [
             'status <' => 2
         ];
-        
+        $data['form'] = [
+            'media_id' => [
+                'type' => 'hidden',
+                'name' => 'media_id',
+                'id' => 'media_id',
+                'class' => 'form-control',
+                'value' => set_value('media_id')
+            ]
+
+        ];
         $offset = $this->input->get('per_page');
         $offset = isset($offset)?$offset:0;
         
