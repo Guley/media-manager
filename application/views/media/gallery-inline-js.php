@@ -71,6 +71,7 @@
         module = $('select[name="set_modules"]').val();
         var search_string = '';
         if (search != '') {
+			page=0;
             search_string = '&search=' + search;
         }
         if(module != ''){
