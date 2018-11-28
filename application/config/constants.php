@@ -86,10 +86,10 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 
 define('SITE_NAME', 'Media Gallery');
-define('SITE_URL', 'http://www.media.dev');
+define('SITE_URL', 'https://github.com/Guley/Codeigniter-media-manager/');
 define('PAGE_RECORD_LIMIT', 10);
 define('MEDIA_RECORD_LIMIT', 12);
 define('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT']);
 define('DOCUMENT_ROOT_CDN', $_SERVER['DOCUMENT_ROOT'].'/cdn/');
 define('ADMIN_CONTACT_US_EMAIL', 'gulshan@rkmarketing.net');
-define('CDN_PATH', 'http://www.media.dev/cdn/');
+define('CDN_PATH', 'https://github.com/Guley/Codeigniter-media-manager/cdn/');
