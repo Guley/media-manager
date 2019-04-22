@@ -34,7 +34,7 @@ class Media extends MY_Controller {
         $cond = [
             'status <' => 2
         ];
-        $data['form'] = [
+         $data['form'] = [
             'media_id' => [
                 'type' => 'hidden',
                 'name' => 'media_id',
@@ -44,6 +44,7 @@ class Media extends MY_Controller {
             ]
 
         ];
+        
         $offset = $this->input->get('per_page');
         $offset = isset($offset)?$offset:0;
         
@@ -58,7 +59,7 @@ class Media extends MY_Controller {
         $data['meta_title'] = 'Media Management';
 
         $data['add_js'] = ['common.js','fileinput.min.js'];
-        $data['add_custom_js'] = $this->load->view('media/gallery-inline-js', ['module' => 'Category'], true);
+        $data['add_custom_js'] = $this->load->view('media/gallery-inline-js', ['module' => 'Common'], true);
         $data['template_file'] = 'media/lists';
         
         $this->load_view($data);
@@ -128,8 +129,22 @@ class Media extends MY_Controller {
      * Upload images
      */
     public function upload(){
+        //require_once(APPPATH.'/libraries/class.ImageFilter.php');
+       
         if(!empty($_FILES['upload_img']))
         {
+            require_once(APPPATH.'third_party/ImageFilter.php');
+
+           $filter = new ImageFilter;
+           $score = $filter->GetScore($_FILES['upload_img']['tmp_name']);  
+          
+           if(!empty($score))
+            {
+            if($score >= 40)
+            {
+                $res['error'] = 'It seems that you have uploaded a adult picture';
+            }else{
+
            $date=date('m/Y');
            $date = str_replace( '/', '', $date);
            $upload_path = DOCUMENT_ROOT_CDN.'uploads/'.$date;
@@ -157,6 +172,8 @@ class Media extends MY_Controller {
             $config['max_filename'] = 30;
             //$config['encrypt_name']=TRUE;
             $files = $_FILES;
+           
+           
             //for($i=0; $i<$counts; $i++){
                    //if($files['upload_img']['name'][$i]!=''){
                         /*$_FILES['myfile']['name']= $files['myfile']['name'][$i];
@@ -198,9 +215,14 @@ class Media extends MY_Controller {
                 } else {
                     $res['error'] = $this->upload->display_errors();
                 }
-                    //}
-               //}
+            //     }
+            // }else{
+            //     $res['error'] = 'Image not found!';
+            // }
+                    }
+               }
               //echo json_encode($imgid);
+            
         } else {
             $res['error'] = 'Image not found!';
         }
@@ -225,14 +247,18 @@ class Media extends MY_Controller {
     }
     
     public function delete($media_id){
-        
+        if($media_id == 4){
+            $this->session->set_flashdata('error', 'Unable to delete developer image.');
+             redirect(base_url('media'));
+
+        }
         $mediaInfo = $this->Media_m->getmedia(['media_id' => $media_id], 0, true);
         if(!empty($mediaInfo)){
-            unlink(CDN_PATH.'uploads/'.$mediaInfo['file_path'].'/small/'.$mediaInfo['file_name']);
-            unlink(CDN_PATH.'uploads/'.$mediaInfo['file_path'].'/medium/'.$mediaInfo['file_name']);
-            unlink(CDN_PATH.'uploads/'.$mediaInfo['file_path'].'/large/'.$mediaInfo['file_name']);
+            @unlink(DOCUMENT_ROOT_CDN.'uploads/'.$mediaInfo['file_path'].'/small/'.$mediaInfo['file_name']);
+            @unlink(DOCUMENT_ROOT_CDN.'uploads/'.$mediaInfo['file_path'].'/medium/'.$mediaInfo['file_name']);
+            @unlink(DOCUMENT_ROOT_CDN.'uploads/'.$mediaInfo['file_path'].'/large/'.$mediaInfo['file_name']);
             
-            if($this->Common_m->save('media', ['status' => 2], ['media_id' => $media_id])){
+            if($this->db->delete('media', ['media_id' => $media_id])){
                 $this->session->set_flashdata('success', 'Image deleted successfully.');
             } else {
                 $this->session->set_flashdata('error', 'Unable to delete image.');
@@ -240,5 +266,12 @@ class Media extends MY_Controller {
         }
         redirect(base_url('media'));
     }
-    
+    public function directorystr(){
+
+        $data['page_icon'] = '<i class="icon-paint-format"></i>';
+        $data['meta_title'] = 'Media Directory Management';
+        $data['template_file'] = 'media/directory';
+        $data['add_custom_js'] = $this->load->view('media/directory-inline-js', $data, true);
+        $this->load_view($data);
+    }
 }
