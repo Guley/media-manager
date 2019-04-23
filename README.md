@@ -9,3 +9,4 @@ For database dump contact me on <a traget="_blank" href="mailto:gul2787@gmail.co
 # ScreenShot
 
 <img src="https://raw.githubusercontent.com/Guley/media-manager/master/Screenshot.png">
+<img src="https://raw.githubusercontent.com/Guley/media-manager/master/Screenshot_2.png">
