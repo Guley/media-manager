@@ -69,13 +69,14 @@
     function refreshImageList() {
         page = $('select[name="gallery_pages"]').val();
         module = $('select[name="set_modules"]').val();
+	search = $('.search_txt').val();
         var search_string = '';
         if (search != '') {
-			page=0;
-            search_string = '&search=' + search;
+            page=0;
+            search_string += '&search=' + search;
         }
         if(module != ''){
-            search_string = '&module=' + module;
+            search_string += '&module=' + module;
         }
         //$("#gallery_container").blockUI();
         $.ajax({
