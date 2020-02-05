@@ -57,7 +57,7 @@
                                 	$lastSegment = end($ex);
                                 ?>
                                 <ul class="navigation navigation-main navigation-accordion">
-                                    <li <?php echo ($lastSegment == 'media')?'class="active"':''; ?> ><a href="<?php echo base_url('media'); ?>"><i class="icon-media"></i> <span>Media Manager</span></a></li>
+                                    <li <?php echo strpos($lastSegment, 'media')?'class="active"':''; ?> ><a href="<?php echo base_url('media'); ?>"><i class="icon-media"></i> <span>Media Manager</span></a></li>
                                     <li <?php echo ($lastSegment == 'sample')?'class="active"':''; ?> ><a href="<?php echo base_url('media/sample'); ?>"><i class="icon-file-media"></i> <span>Sample Form</span></a></li>
                                 </ul>
                             </div>
