@@ -1,23 +1,4 @@
 <?php
-/**
- * Media manager
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * @package	Medialibrary
- * @author	Gulshan
- * @author	http://gulshan.atspace.co.uk
- * @copyright	Copyright (c) 2017, Gulshan. (http://iamguley.atspace.co.uk/media)
- * @link	http://iamguley.atspace.co.uk/media
- * @since	Version 1.0.0
- * @filesource
- */
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -61,6 +42,32 @@ class Media extends MY_Controller {
         $data['add_js'] = ['common.js','fileinput.min.js'];
         $data['add_custom_js'] = $this->load->view('media/gallery-inline-js', ['module' => 'Common'], true);
         $data['template_file'] = 'media/lists';
+        
+        $this->load_view($data);
+    }
+
+    /*Sample Page */
+
+    public function sample(){
+        $data['form'] = [
+            'media_id' => [
+                'type' => 'hidden',
+                'name' => 'media_id',
+                'id' => 'media_id',
+                'class' => 'form-control',
+                'value' => set_value('media_id')
+            ]
+
+        ];
+        $this->db->order_by('media_id','desc');
+        $product_pic_info = $this->Media_m->getmedia(['status'=>1],0,true);
+        $data['product_pic_info'] = $product_pic_info;
+        $data['page_icon'] = '<i class="icon-paint-format"></i>';
+        $data['meta_title'] = 'Media Management';
+
+        $data['add_js'] = ['common.js','fileinput.min.js'];
+        $data['add_custom_js'] = $this->load->view('media/gallery-inline-js', ['module' => 'Common'], true);
+        $data['template_file'] = 'inc/sample';
         
         $this->load_view($data);
     }
