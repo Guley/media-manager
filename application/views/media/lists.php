@@ -1,11 +1,12 @@
 <div class="content">
     <?php echo form_input($form['media_id']);  ?>
     <div class="row selected_images"> </div>
+    <div class="pull-right"><button type="button" onclick="loadUploaderWithGallery('.txt_container', 'media_test', 'single')" class="btn btn-primary btn-icon btn-rounded"><i class="icon-upload"></i></button> </div>
 </div>
-
 
 <div class="content">
     <div class="panel panel-flat">
+                         
         <div class="table-responsive">
             <table class="table table-responsive">
                 <thead>
