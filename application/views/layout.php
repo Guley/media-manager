@@ -9,12 +9,20 @@
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
     <link href="<?php echo CDN_PATH.'portal/css/icons/icomoon/styles.css'; ?>" rel="stylesheet" type="text/css">
+    <link href="<?php echo CDN_PATH.'portal/css/style.css'; ?>" rel="stylesheet" type="text/css">
     <link href="<?php echo CDN_PATH.'portal/css/bootstrap.min.css'; ?>" rel="stylesheet" type="text/css">
     <link href="<?php echo CDN_PATH.'portal/css/core.min.css'; ?>" rel="stylesheet" type="text/css">
+    <link href="<?php echo CDN_PATH.'portal/css/colors.css'; ?>" rel="stylesheet" type="text/css">
+    <link href="<?php echo CDN_PATH.'portal/css/colors.min.css'; ?>" rel="stylesheet" type="text/css">
     <link href="<?php echo CDN_PATH.'portal/css/components.min.css'; ?>" rel="stylesheet" type="text/css">
     <link href="<?php echo CDN_PATH.'portal/css/extras/sweetalert.css'; ?>" rel="stylesheet" type="text/css">
     <link href="<?php echo CDN_PATH.'portal/css/extras/sweetalert.min.css'; ?>" rel="stylesheet" type="text/css">
 
+<?php if(isset($add_css) && !empty($add_css)){
+    foreach($add_css as $cssObj){ ?>
+<link href="<?php echo CDN_PATH.'portal/css/'.$cssObj; ?>" rel="stylesheet" type="text/css">
+<?php   }
+} ?>
 
 
     <script src="<?php echo CDN_PATH.'portal/js/core/libraries/jquery.min.js'; ?>"></script>
@@ -44,11 +52,13 @@
                         <!-- Main navigation -->
                         <div class="sidebar-category sidebar-category-visible">
                             <div class="category-content no-padding">
-                                <?php $current_url = ' '.uri_string(); ?>
+                                <?php $current_url = ' '.uri_string(); 
+                                	$ex = explode('/', $current_url);
+                                	$lastSegment = end($ex);
+                                ?>
                                 <ul class="navigation navigation-main navigation-accordion">
-                                    
-                                    <li><a href="<?php echo base_url(); ?>"><i class="icon-user"></i> <span>Dashbaord</span></a></li>
-                                    <li <?php echo strpos($current_url, 'media')?'class="active"':''; ?> ><a href="<?php echo base_url('media'); ?>"><i class="icon-file-media"></i> <span>Media</span></a></li>
+                                    <li <?php echo ($lastSegment == 'media')?'class="active"':''; ?> ><a href="<?php echo base_url('media'); ?>"><i class="icon-media"></i> <span>Media Manager</span></a></li>
+                                    <li <?php echo ($lastSegment == 'sample')?'class="active"':''; ?> ><a href="<?php echo base_url('media/sample'); ?>"><i class="icon-file-media"></i> <span>Sample Form</span></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -72,9 +82,9 @@
                                     <div class="heading-elements">
 
                                         <div class="heading-btn-group">
-					<?php if(strpos($current_url, 'media')){ ?>
-                                            <button type="button" onclick="loadUploaderWithGallery('.txt_container', 'media_test', 'single')" class="btn btn-primary btn-icon btn-rounded"><i class="icon-upload"></i></button> <!--  if you need to upload muliple images chanhe single to multiple -->
-					<?php } ?>
+					                       <?php if(($lastSegment  ==  'media')){ ?>
+                                            <!--  if you need to upload muliple images chanhe single to multiple -->
+					                       <?php } ?>
                                         </div>
 
                                     </div>
@@ -109,11 +119,6 @@
 <?php   }
 } ?>
 
-<?php if(isset($add_css) && !empty($add_css)){
-    foreach($add_css as $cssObj){ ?>
-<link href="<?php echo CDN_PATH.'portal/css/'.$cssObj; ?>" rel="stylesheet" type="text/css">
-<?php   }
-} ?>
 <!--script src="<?php //echo site_url('assets/js/custom.js'); ?>"></script-->
 
 <?php if(isset($add_custom_js)){
