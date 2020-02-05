@@ -67,7 +67,7 @@ class Media extends MY_Controller {
 
         $data['add_js'] = ['common.js','fileinput.min.js'];
         $data['add_custom_js'] = $this->load->view('media/gallery-inline-js', ['module' => 'Common'], true);
-        $data['template_file'] = 'inc/sample';
+        $data['template_file'] = 'media/sample';
         
         $this->load_view($data);
     }
